@@ -1,9 +1,14 @@
+<!-- Home Page: Interests Form -->
+
 {% extends "header.html" %} {% block content %}
 <div class="main-container">
   <div class="decoration-main-container"><div class="decoration-main"></div></div>
-  <h2 class="main-title"> Bored? </h2>
+  <h2 class="main-title"> Search a movie </h2>
   <form class="searchbar" action="/" method="POST">
     {{ form.csrf_token }}
+    
+    <!-- take ouut search bar later -->
+    {{ form.search_query(class="form-control", placeholder="movie name") }}
 
     {% if form.search_query.errors %}
       <div class="error" role="alert">
@@ -14,7 +19,7 @@
     {% endif %}
     
     {{ form.submit(class="form-button") }}
-    {{ form.submit(class="form-button") }}
   </form>
 </div>
 {% endblock %}
+
