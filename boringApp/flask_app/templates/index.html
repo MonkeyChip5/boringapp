@@ -1,25 +1,43 @@
 <!-- Home Page: Interests Form -->
-
-{% extends "header.html" %} {% block content %}
+{% extends "header.html" %}
+{% block content %}
 <div class="main-container">
   <div class="decoration-main-container"><div class="decoration-main"></div></div>
-  <h2 class="main-title"> Search a movie </h2>
-  <form class="searchbar" action="/" method="POST">
-    {{ form.csrf_token }}
-    
-    <!-- take ouut search bar later -->
-    {{ form.search_query(class="form-control", placeholder="movie name") }}
+  <h2 class="main-title">Find an Activity</h2>
 
-    {% if form.search_query.errors %}
-      <div class="error" role="alert">
-        {% for error in form.search_query.errors %}
-          <span>{{ error }}</span>
-        {% endfor %}
-      </div>
-    {% endif %}
-    
+  <form method="POST" class="searchbar">
+    {{ form.csrf_token }}
+
+    <p>{{ form.query_type.label }}</p>
+    {{ form.query_type(class="form-check-input") }}
+
+    <!-- <div id="activity-key">
+      {{ form.activity_key.label }}
+      {{ form.activity_key(class="form-control", placeholder="Activity Key") }}
+    </div> -->
+
+    <div id="filters">
+      <p>Types:</p>
+      {{ form.education() }} {{ form.education.label }}<br>
+      {{ form.recreational() }} {{ form.recreational.label }}<br>
+      {{ form.social() }} {{ form.social.label }}<br>
+      {{ form.charity() }} {{ form.charity.label }}<br>
+      {{ form.cooking() }} {{ form.cooking.label }}<br>
+      {{ form.relaxation() }} {{ form.relaxation.label }}<br>
+      {{ form.busywork() }} {{ form.busywork.label }}<br>
+
+      <p>{{ form.participants.label }}</p>
+      {{ form.participants(class="form-control") }}
+    </div>
+
     {{ form.submit(class="form-button") }}
   </form>
+
+  {% if activity %}
+    <div class="activity-result">
+      <h3>Try this:</h3>
+      <p>{{ activity.activity }}</p>
+    </div>
+  {% endif %}
 </div>
 {% endblock %}
-
