@@ -22,17 +22,9 @@ class InterestForm(FlaskForm):
         "What kind of activity lookup?",
         choices=[
             ("random", "I'm bored—just give me something"),
-            ("key", "I know what I want to do (by key)"),
             ("filter", "I'm picky—help me filter"),
         ],
         validators=[InputRequired()],
-    )
-
-    # If they picked the 'key' option
-    activity_key = StringField(
-        "Activity Key",
-        validators=[Optional(), Length(min=1, max=20)],
-        description="Enter the BoredAPI activity key",
     )
 
     # Filter options: type checkboxes
