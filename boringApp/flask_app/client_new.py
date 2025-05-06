@@ -1,18 +1,19 @@
+import random
 import requests
 
 
 class Activity(object):
     def __init__(self, json_data):
-        self.activity = json_data["activity", "no activity found"]
-        self.availability = json_data["availability", 0.0]
-        self.type= json_data["type", "n/a"]
-        self.participants = json_data["participants", 0]
-        self.price = json_data["price", 0.0]
-        self.accessibility = json_data["accessibility", "n/a"]
-        self.duration = json_data["duration", "n/a"]
-        self.kid_friendly = json_data["kidFriendly", False]
-        self.link = json_data["link", "n/a"]
-        self.key = json_data["key", "n/a"]
+        self.activity = json_data.get("activity", "no activity found")
+        self.availability = json_data.get("availability", 0.0)
+        self.type= json_data.get("type", "n/a")
+        self.participants = json_data.get("participants", 0)
+        self.price = json_data.get("price", 0.0)
+        self.accessibility = json_data.get("accessibility", "n/a")
+        self.duration = json_data.get("duration", "n/a")
+        self.kid_friendly = json_data.get("kidFriendly", False)
+        self.link = json_data.get("link", "n/a")
+        self.key = json_data.get("key", "n/a")
 
     def __repr__(self):
         return self.activity
@@ -24,7 +25,7 @@ class ActivityClient(object):
         self.base_url = "https://bored-api.appbrewery.com/"
 
     def get_random_activity(self):
-        url = f"{self.base_url}/random"
+        url = f"{self.base_url}random"
         resp = self.sess.get(url)
 
         if resp.status_code != 200:
@@ -41,7 +42,7 @@ class ActivityClient(object):
         if participants:
             params["participants"] = participants
         
-        url = f"{self.base_url}/filter"
+        url = f"{self.base_url}filter"
         resp = self.sess.get(url, params=params)
 
         if resp.status_code != 200:
@@ -51,5 +52,8 @@ class ActivityClient(object):
 
         if not isinstance(data, list) or not data:
             raise ValueError("Error in filter")
+        
+        # api filter returns a list of all activites that fit those filters, make it generate a random one
+        random_activity = random.choice(data)
 
-        return Activity(data[0])
+        return Activity(random_activity)

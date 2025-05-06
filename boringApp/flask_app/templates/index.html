@@ -8,11 +8,12 @@
   <form method="POST" class="searchbar">
     {{ form.csrf_token }}
 
-    <p>{{ form.query_type.label }}</p>
-    {{ form.query_type(class="form-check-input") }}
-
-    <div id="filters">
-      <p>Types:</p>
+    <div>
+      <strong>{{ form.query_type.label }}</strong>
+      <p> {{ form.query_type(class="form-check-input") }}</p>
+      
+      <br>
+      <strong>Types:</strong> <br>
       {{ form.education() }} {{ form.education.label }}<br>
       {{ form.recreational() }} {{ form.recreational.label }}<br>
       {{ form.social() }} {{ form.social.label }}<br>
@@ -20,13 +21,16 @@
       {{ form.cooking() }} {{ form.cooking.label }}<br>
       {{ form.relaxation() }} {{ form.relaxation.label }}<br>
       {{ form.busywork() }} {{ form.busywork.label }}<br>
-    
+
       <br>
-      {{ form.participants.label }}
+      <strong>{{ form.participants.label }}</strong>
       {{ form.participants(class="form-control") }}
+
+      <br><br><br>
+      {{ form.submit(class="form-button") }}
+    
     </div>
 
-    {{ form.submit(class="form-button") }}
   </form>
 
   <!-- {% if activity %}

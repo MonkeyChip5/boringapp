@@ -4,21 +4,16 @@
 <div class="main-container">
   <div class="decoration-main-container"><div class="decoration-main"></div></div>
   <h2 class="main-title"> Bored? </h2>
-  <!--
-    - pull the information from the interest form from the home page and display info of the activity
-    - add a button that automatically generates a new avtivity within the same activity type and group amt
-    - review button for that activity: leads to the review form
-  -->
-  
+
   {% if activity %}
 
     <h4>{{ activity.activity }}</h4>
     <ul>
-      <li>Type: {{ activity.type }}</li>
-      <li>Participants: {{ activity.participants }}</li>
-      <li>Price: {{ activity.price }}</li>
-      <li>Duration: {{ activity.duration }}</li>
-      <li>Kid Friendly: {{ activity.kid_friendly }}</li>
+      <li><strong>Type:</strong> {{ activity.type }}</li>
+      <li><strong>Participants:</strong> {{ activity.participants }}</li>
+      <li><strong>Price:</strong> {{ activity.price }}</li>
+      <li><strong>Duration:</strong> {{ activity.duration }}</li>
+      <li><strong>Kid Friendly:</strong> {{ activity.kid_friendly }}</li>
       {% if activity.link %}
         <li><a href="{{ activity.link }}">Link for More Info</a></li>
       {% endif %}
@@ -26,6 +21,7 @@
 
   {% endif %}
   
+  <br>
   <a href="{{ url_for('activities.index') }}">Home</a>
 </div>
 {% endblock %}

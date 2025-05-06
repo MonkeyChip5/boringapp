@@ -19,10 +19,10 @@ from .models import User
 class InterestForm(FlaskForm):
     # Which kind of query?
     query_type = RadioField(
-        "What kind of activity lookup?",
+        "What kind of activity?",
         choices=[
             ("random", "I'm bored—just give me something"),
-            ("filter", "I'm picky—help me filter"),
+            ("filter", "I'm picky—help me filter (types & participants)"),
         ],
         validators=[InputRequired()],
     )
