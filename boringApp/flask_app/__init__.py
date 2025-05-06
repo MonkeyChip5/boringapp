@@ -17,7 +17,8 @@ from datetime import datetime
 import os
 
 # local
-from .client import MovieClient
+# from .client import MovieClient
+from .client_new import ActivityClient
 
 # update with your API Key
 OMDB_API_KEY = '37745e75'
@@ -29,7 +30,8 @@ if os.getenv('OMDB_API_KEY'):
 db = MongoEngine()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
-movie_client = MovieClient(OMDB_API_KEY)
+# movie_client = MovieClient(OMDB_API_KEY)
+activity_client = ActivityClient()
 
 from .users.routes import users
 # from .movies.routes import movies

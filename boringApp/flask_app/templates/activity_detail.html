@@ -9,6 +9,23 @@
     - add a button that automatically generates a new avtivity within the same activity type and group amt
     - review button for that activity: leads to the review form
   -->
+  
+  {% if activity %}
 
+    <h4>{{ activity.activity }}</h4>
+    <ul>
+      <li>Type: {{ activity.type }}</li>
+      <li>Participants: {{ activity.participants }}</li>
+      <li>Price: {{ activity.price }}</li>
+      <li>Duration: {{ activity.duration }}</li>
+      <li>Kid Friendly: {{ activity.kid_friendly }}</li>
+      {% if activity.link %}
+        <li><a href="{{ activity.link }}">Link for More Info</a></li>
+      {% endif %}
+    </ul>
+
+  {% endif %}
+  
+  <a href="{{ url_for('activities.index') }}">Home</a>
 </div>
 {% endblock %}

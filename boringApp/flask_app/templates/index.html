@@ -3,7 +3,7 @@
 {% block content %}
 <div class="main-container">
   <div class="decoration-main-container"><div class="decoration-main"></div></div>
-  <h2 class="main-title">Find an Activity</h2>
+  <h2 class="main-title">Bored?</h2>
 
   <form method="POST" class="searchbar">
     {{ form.csrf_token }}
@@ -20,19 +20,20 @@
       {{ form.cooking() }} {{ form.cooking.label }}<br>
       {{ form.relaxation() }} {{ form.relaxation.label }}<br>
       {{ form.busywork() }} {{ form.busywork.label }}<br>
-
-      <p>{{ form.participants.label }}</p>
+    
+      <br>
+      {{ form.participants.label }}
       {{ form.participants(class="form-control") }}
     </div>
 
     {{ form.submit(class="form-button") }}
   </form>
 
-  {% if activity %}
+  <!-- {% if activity %}
     <div class="activity-result">
       <h3>Try this:</h3>
       <p>{{ activity.activity }}</p>
     </div>
-  {% endif %}
+  {% endif %} -->
 </div>
 {% endblock %}

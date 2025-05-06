@@ -3,16 +3,16 @@ import requests
 
 class Activity(object):
     def __init__(self, json_data):
-        self.activity = json_data["Activity"]
-        self.availability = json_data["Availability"]
-        self.type= json_data["Type"]
-        self.participants = json_data["Participants"]
-        self.price = json_data["Price"]
-        self.accessibility = json_data["Accessibility"]
-        self.duration = json_data["Duration"]
-        self.kid_friendly = json_data["Kid_Friendly"]
-        self.link = json_data["Link"]
-        self.key = json_data["Key"]
+        self.activity = json_data["activity", "no activity found"]
+        self.availability = json_data["availability", 0.0]
+        self.type= json_data["type", "n/a"]
+        self.participants = json_data["participants", 0]
+        self.price = json_data["price", 0.0]
+        self.accessibility = json_data["accessibility", "n/a"]
+        self.duration = json_data["duration", "n/a"]
+        self.kid_friendly = json_data["kidFriendly", False]
+        self.link = json_data["link", "n/a"]
+        self.key = json_data["key", "n/a"]
 
     def __repr__(self):
         return self.activity
@@ -34,7 +34,7 @@ class ActivityClient(object):
 
         return Activity(data)
 
-    def get_filtered_activities(self, activity_type=None, participants=None):
+    def get_filtered_activity(self, activity_type=None, participants=None):
         params = {}
         if activity_type:
             params["type"] = activity_type
@@ -49,7 +49,7 @@ class ActivityClient(object):
 
         data = resp.json()
 
-        if not isinstance(data, list):
+        if not isinstance(data, list) or not data:
             raise ValueError("Error in filter")
 
-        return [Activity(item) for item in data]
+        return Activity(data[0])
