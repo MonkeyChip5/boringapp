@@ -12,5 +12,32 @@
         - favorite activities lists
         - list of reccommended activites based on last activity
     -->
+
+    <h1>{{ username }}'s Reviews</h1>
+    
+    {% set count = reviews|length %}
+    <p>Number of Reviews: {{ count }}</p>
+
+    <table style="border: 1px solid #FFF">
+        <tr style="border: 1px solid #FFF">
+            <th style="border: 1px solid #FFF">Date</th>
+            <th style="border: 1px solid #FFF">Movie</th>
+            <th style="border: 1px solid #FFF">Content</th>
+        </tr>
+        {% for review in reviews %}
+            <tr style="border: 1px solid #FFF">
+                <td style="border: 1px solid #FFF">{{ review.date }}</td>
+                <td style="border: 1px solid #FFF">{{ review.movie_title }}</td>
+                <td style="border: 1px solid #FFF">{{ review.content }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h1>Favorites</h1>
+    
+
+    <h1>Reccommended</h1>
+    
+
 </div>
 {% endblock %}

@@ -1,27 +1,36 @@
 <!-- Activity Page -->
-
 {% extends "header.html" %} {% block content %}
 <div class="main-container">
-  <div class="decoration-main-container"><div class="decoration-main"></div></div>
+  <!-- <div class="decoration-main-container"><div class="decoration-main"></div></div> -->
   <h2 class="main-title"> Bored? </h2>
 
-  {% if activity %}
+  <div id="activity-content">
+    {% if activity %}
 
-    <h4>{{ activity.activity }}</h4>
-    <ul>
-      <li><strong>Type:</strong> {{ activity.type }}</li>
-      <li><strong>Participants:</strong> {{ activity.participants }}</li>
-      <li><strong>Price:</strong> {{ activity.price }}</li>
-      <li><strong>Duration:</strong> {{ activity.duration }}</li>
-      <li><strong>Kid Friendly:</strong> {{ activity.kid_friendly }}</li>
-      {% if activity.link %}
-        <li><a href="{{ activity.link }}">Link for More Info</a></li>
-      {% endif %}
-    </ul>
+      <center>{{ activity.activity }}</center>
+      <br>
+      <ul>
+        <li><strong>Type:</strong> {{ activity.type }}</li>
+        <li><strong>Participants:</strong> {{ activity.participants }}</li>
+        <li><strong>Price:</strong> {{ activity.price }}</li>
+        <li><strong>Duration:</strong> {{ activity.duration }}</li>
+        <li><strong>Kid Friendly:</strong> {{ activity.kid_friendly }}</li>
+        {% if activity.link %}
+          <li><a href="{{ activity.link }}">Link for More Info</a></li>
+        {% endif %}
+      </ul>
 
-  {% endif %}
-  
-  <br>
-  <a href="{{ url_for('activities.index') }}">Home</a>
+    {% endif %}
+
+    <br>
+    <a class="activity-links" href="{{ url_for('activities.activity', 
+                        query_type=request.args.get('query_type'), 
+                        activity_type=request.args.get('activity_type'), 
+                        participants=request.args.get('participants')) }}">
+      Try Another Activity (same filters)
+    </a>
+    <br><br>
+    <a class="activity-links" href="{{ url_for('activities.index') }}">Home</a>
+  </div>
 </div>
 {% endblock %}

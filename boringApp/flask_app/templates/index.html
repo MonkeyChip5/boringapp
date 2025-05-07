@@ -2,13 +2,13 @@
 {% extends "header.html" %}
 {% block content %}
 <div class="main-container">
-  <div class="decoration-main-container"><div class="decoration-main"></div></div>
+  <!-- <div class="decoration-main-container"><div class="decoration-main"></div></div> -->
   <h2 class="main-title">Bored?</h2>
 
   <form method="POST" class="searchbar">
     {{ form.csrf_token }}
 
-    <div>
+    <div class="form-content">
       <strong>{{ form.query_type.label }}</strong>
       <p> {{ form.query_type(class="form-check-input") }}</p>
       
