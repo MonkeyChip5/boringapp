@@ -125,5 +125,16 @@ class UpdateUsernameForm(FlaskForm):
             if user is not None:
                 raise ValidationError("Username is taken")
 
+# Login Page: Update user profile picture
+class UpdateProfilePicForm(FlaskForm):
+    picture = FileField(
+        "Update Profile Picture",
+        validators=[
+            FileRequired(),
+            FileAllowed(["jpg", "png", "jpeg"], "Images only!"),
+        ],
+    )
+    submit_picture = SubmitField("Update")
+
 # Review Page for a Specific Activity: Review Form
 
