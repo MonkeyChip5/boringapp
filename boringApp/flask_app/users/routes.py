@@ -1,10 +1,12 @@
+""" change this so that it doesn't use profile picture """
+
 from flask import Blueprint, redirect, url_for, render_template, flash, request
 from flask_login import current_user, login_required, login_user, logout_user
 import base64
 from io import BytesIO
 from .. import bcrypt
 from werkzeug.utils import secure_filename
-from ..forms import RegistrationForm, LoginForm, UpdateUsernameForm, UpdateProfilePicForm
+from ..forms import RegistrationForm, LoginForm, UpdateUsernameForm
 from ..models import User
 
 users = Blueprint("users", __name__)
@@ -12,7 +14,6 @@ users = Blueprint("users", __name__)
 """ ************ User Management views ************ """
 
 
-# TODO: implement
 @users.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
@@ -28,7 +29,6 @@ def register():
     return render_template("register.html", form=form)
 
 
-# TODO: implement
 @users.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -48,7 +48,6 @@ def login():
     return render_template("login.html", form=form)
 
 
-# TODO: implement
 @users.route("/logout")
 @login_required
 def logout():
@@ -90,5 +89,4 @@ def account():
     return render_template("account.html", update_username_form=update_username_form,
                            update_profile_pic_form=update_profile_pic_form, image=image)
 
-    # TODO: handle get requests
     
