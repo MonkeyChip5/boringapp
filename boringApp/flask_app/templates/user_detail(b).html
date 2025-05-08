@@ -10,7 +10,7 @@
     <!--
         - list all reviews the user has made
         - favorite activities lists
-        - list of reccommended activites based on last activity
+        - list of reccommended activites based on last activity or favorites?
     -->
 
     <h1>{{ username }}'s Reviews</h1>
@@ -21,7 +21,7 @@
     <table style="border: 1px solid #FFF">
         <tr style="border: 1px solid #FFF">
             <th style="border: 1px solid #FFF">Date</th>
-            <th style="border: 1px solid #FFF">Movie</th>
+            <th style="border: 1px solid #FFF">Activity</th>
             <th style="border: 1px solid #FFF">Content</th>
         </tr>
         {% for review in reviews %}
@@ -33,9 +33,11 @@
         {% endfor %}
     </table>
 
+    <br>
     <h1>Favorites</h1>
     
 
+    <br>
     <h1>Reccommended</h1>
     
 

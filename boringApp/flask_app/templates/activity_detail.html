@@ -7,7 +7,14 @@
   <div id="activity-content">
     {% if activity %}
 
-      <center>{{ activity.activity }}</center>
+      <center>
+        {{ activity.activity }}
+        <br><br>
+        <a class="activity-links" href="{{ url_for('activities.reviewAnActivity')}}">
+        add a review
+        </a>
+      </center>
+    
       <br>
       <ul>
         <li><strong>Type:</strong> {{ activity.type }}</li>
@@ -19,6 +26,9 @@
           <li><a href="{{ activity.link }}">Link for More Info</a></li>
         {% endif %}
       </ul>
+
+    {% else %}
+        <p>No Activity Found :(</p>
 
     {% endif %}
 

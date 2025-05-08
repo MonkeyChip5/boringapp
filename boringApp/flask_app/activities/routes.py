@@ -1,6 +1,6 @@
 import base64,io
 from io import BytesIO
-from flask import Blueprint, render_template, url_for, redirect, request, flash
+from flask import Blueprint, render_template, session, url_for, redirect, request, flash
 from flask_login import current_user
 
 from .. import activity_client
@@ -76,9 +76,25 @@ def activity():
         elif query_type == "filter":
             activity = activity_client.get_filtered_activity(activity_type, participants)
 
+        session['current_activity'] = activity.__dict__
+        # print("current_activity: ", session.get('current_activity'))
+
         return render_template("activity_detail.html", form=form, activity=activity)
     except ValueError as e:
         return render_template("activity_detail.html", error_msg=str(e))
+
+
+# review page
+@activities.route("/reviews", methods=["GET", "POST"])
+def reviewAnActivity():
+    
+    return render_template("review_an_activity.html")
+    
+    # this returns the full activity, so store it's activity name using the key "activity"
+    # ex: current_activity {'activity': 'Draw something interesting', 'availability': 0, 'type': 'recreational', 
+    # 'participants': 1, 'price': 0, 'accessibility': 'Few to no challenges', 'duration': 'minutes', 'kid_friendly': True, 'link': '', 'key': '8033599'}
+    
+    # current_activity = session.get('current_activity')
 
 # user page
 @activities.route("/user/<username>")
