@@ -26,15 +26,21 @@ class InterestForm(FlaskForm):
         ],
         validators=[InputRequired()],
     )
-
+    
     # Filter options: type checkboxes
-    education = BooleanField("Education")
-    recreational = BooleanField("Recreational")
-    social = BooleanField("Social")
-    charity = BooleanField("Charity")
-    cooking = BooleanField("Cooking")
-    relaxation = BooleanField("Relaxation")
-    busywork = BooleanField("Busywork")
+    activity_type = RadioField(
+        "Types",
+        choices=[
+            ("education", "Education"),
+            ("recreational", "Recreational"),
+            ("social", "Social"),
+            ("charity", "Charity"),
+            ("cooking", "Cooking"),
+            ("relaxation", "Relaxation"),
+            ("busywork", "BusyWork"),
+        ],
+        validators=[Optional()],
+    )
 
     # Filter options: number of participants
     participants = SelectField(
@@ -54,36 +60,18 @@ class InterestForm(FlaskForm):
 
     submit = SubmitField("Find Activity")
 
-    def validate_activity_key(self, activity_key):
-        if self.query_type.data == "key":
-            if not activity_key.data:
-                raise ValidationError("Please provide an activity key.")
-
     def validate(self):
         rv = super().validate()
         if not rv:
             return False
 
-        # If they chose filter, ensure they picked something
+        # if they chose filter, ensure they picked something
         if self.query_type.data == "filter":
-            types_selected = any(
-                getattr(self, t).data
-                for t in [
-                    "education",
-                    "recreational",
-                    "social",
-                    "charity",
-                    "cooking",
-                    "relaxation",
-                    "busywork",
-                ]
-            )
-            if not types_selected and not self.participants.data:
+            if not self.activity_type.data and not self.participants.data:
                 self.query_type.errors.append(
                     "Please select at least one activity type or participants."
                 )
                 return False
-
         return True
 
 # Registration Page: Registration Form

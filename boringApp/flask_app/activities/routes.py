@@ -21,45 +21,14 @@ def index():
 
     if form.validate_on_submit():
         query_type = form.query_type.data
-        for t in [
-                "education", "recreational", "social", "charity", "cooking", "relaxation", "busywork"
-            ]:
-                if getattr(form, t).data:
-                    activity_type = t
-                    break
+        activity_type = form.activity_type.data
         participants = form.participants.data
         
         return redirect(url_for("activities.activity", query_type=query_type, activity_type=activity_type, participants=participants))
 
     return render_template("index.html", form=form)
 
-    # activity_type = None  # Default to no activity
-
-    # if form.validate_on_submit():
-    #     query_type = form.query_type.data
-
-    #     # Example logic—this is where you'd call the actual BoredAPI
-    #     if query_type == "random":
-    #         # Call BoredAPI with no parameters
-    #         activity = {"activity": "Take a bubble bath", "type": "relaxation"}
-    #     elif query_type == "key":
-    #         key = form.activity_key.data
-    #         # Call BoredAPI with ?key=...
-    #         activity = {"activity": f"Activity for key: {key}"}
-    #     elif query_type == "filter":
-    #         filters = {
-    #             "activity_type": [t for t in [
-    #                 "education", "recreational", "social", "charity", "cooking", "relaxation", "busywork"
-    #             ] if getattr(form, t).data],
-    #             "participants": form.participants.data
-    #         }
-    #         # Call BoredAPI with these filters
-    #         activity = {"activity": "Filtered activity", "filters": filters}
-
-    # return render_template("index.html", form=form, activity=activity)
-
 # activity page
-# @activities.route("/activities", methods=["GET", "POST"])
 @activities.route("/activities", methods=["GET"])
 def activity():
     form = InterestForm()
@@ -99,7 +68,8 @@ def reviewAnActivity():
 # user page
 @activities.route("/user/<username>")
 def user_detail(username):
-    pass
+    return render_template("user_detail(b).html")
+    # return render_template("user_detail(b).html")
     # user = User.objects(username=username).first()
 
     # if not user:

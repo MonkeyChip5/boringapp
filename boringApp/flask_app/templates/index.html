@@ -10,17 +10,11 @@
 
     <div class="form-content">
       <strong>{{ form.query_type.label }}</strong>
-      <p> {{ form.query_type(class="form-check-input") }}</p>
+      <p> {{ form.query_type(class="form-check-input") }} </p>
       
       <br>
-      <strong>Types:</strong> <br>
-      {{ form.education() }} {{ form.education.label }}<br>
-      {{ form.recreational() }} {{ form.recreational.label }}<br>
-      {{ form.social() }} {{ form.social.label }}<br>
-      {{ form.charity() }} {{ form.charity.label }}<br>
-      {{ form.cooking() }} {{ form.cooking.label }}<br>
-      {{ form.relaxation() }} {{ form.relaxation.label }}<br>
-      {{ form.busywork() }} {{ form.busywork.label }}<br>
+      <strong>{{ form.activity_type.label }}</strong> <br>
+      <p>{{ form.activity_type(class="form-check-input") }}</p>
 
       <br>
       <strong>{{ form.participants.label }}</strong>
@@ -32,12 +26,5 @@
     </div>
 
   </form>
-
-  <!-- {% if activity %}
-    <div class="activity-result">
-      <h3>Try this:</h3>
-      <p>{{ activity.activity }}</p>
-    </div>
-  {% endif %} -->
 </div>
 {% endblock %}
