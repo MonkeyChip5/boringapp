@@ -38,6 +38,7 @@ def activity():
     query_type = request.args.get("query_type")
     activity_type = request.args.get("activity_type")
     participants = request.args.get("participants")
+    loggedIn = False
 
     try:
         if query_type == "random":

@@ -6,7 +6,7 @@ import base64
 from io import BytesIO
 from .. import bcrypt
 from werkzeug.utils import secure_filename
-from ..forms import RegistrationForm, LoginForm, UpdateUsernameForm, UpdateProfilePicForm
+from ..forms import RegistrationForm, LoginForm, UpdateUsernameForm
 from ..models import User
 
 users = Blueprint("users", __name__)
@@ -59,7 +59,6 @@ def logout():
 @login_required
 def account():
     update_username_form = UpdateUsernameForm()
-    update_profile_pic_form = UpdateProfilePicForm()
     if request.method == "POST":
         if update_username_form.submit_username.data and update_username_form.validate():
             # TODO: handle update username form submit
@@ -67,26 +66,8 @@ def account():
             current_user.modify(username=new_user)
             current_user.save()
             return redirect(url_for('users.account'))
-
-        if update_profile_pic_form.submit_picture.data and update_profile_pic_form.validate():
-            # TODO: handle update profile pic form submit
-            img = update_profile_pic_form.picture.data
-            filename = secure_filename(img.filename)
-            content_type = f'images/{filename[-3:]}'
-
-            if current_user.profile_pic.get() is None:
-                current_user.profile_pic.put(img.stream, content_type=content_type)
-            else:
-                current_user.profile_pic.replace(img.stream, content_type=content_type)
-            current_user.save()
-            return redirect(url_for('users.account'))
     
-    image = None
-    if current_user.profile_pic:
-        bytes_im = BytesIO(current_user.profile_pic.read())
-        image = base64.b64encode(bytes_im.getvalue()).decode()
     
-    return render_template("account.html", update_username_form=update_username_form,
-                           update_profile_pic_form=update_profile_pic_form, image=image)
+    return render_template("account.html", update_username_form=update_username_form)
 
     
