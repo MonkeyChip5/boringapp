@@ -1,3 +1,4 @@
+'''
 from ast import Pass
 from flask_login import current_user
 from flask_wtf import FlaskForm
@@ -75,3 +76,4 @@ class UpdateUsernameForm(FlaskForm):
 class UpdateProfilePicForm(FlaskForm):
     picture = FileField('Profile Picture', validators=[FileRequired(), FileAllowed(['jpg', 'png'], "Images only!")])
     submit_picture = SubmitField('Update')
+'''

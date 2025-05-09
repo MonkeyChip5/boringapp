@@ -1,3 +1,4 @@
+'''
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import (
@@ -39,6 +40,17 @@ class InterestForm(FlaskForm):
     busywork = BooleanField("Busywork")
 
     # Filter options: number of participants
+    #if not logged in they get these options:
+    participants = SelectField(
+        "Participants",
+        choices=[
+            ("", "Any"),
+            ("1", "1"),
+            ("2", "2"),
+        ],
+        validators=[Optional()],
+    )
+    #if logged in: they get these additional options
     participants = SelectField(
         "Participants",
         choices=[
@@ -87,3 +99,4 @@ class InterestForm(FlaskForm):
                 return False
 
         return True
+'''

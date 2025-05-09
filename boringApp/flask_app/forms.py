@@ -44,22 +44,28 @@ class InterestForm(FlaskForm):
     )
 
     # Filter options: number of participants
-    participants = SelectField(
-        "Participants",
-        choices=[
-            ("", "Any"),
-            ("1", "1"),
-            ("2", "2"),
-            ("3", "3"),
-            ("4", "4"),
-            ("5", "5"),
-            ("6", "6"),
-            ("8", "8"),
-        ],
-        validators=[Optional()],
-    )
-
+    participants = SelectField("Participants", validators=[Optional()])
     submit = SubmitField("Find Activity")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if current_user.is_authenticated:
+            self.participants.choices = [
+                ("",  "Any"),
+                ("1", "1"),
+                ("2", "2"),
+                ("3", "3"),
+                ("4", "4"),
+                ("5", "5"),
+                ("6", "6"),
+                ("8", "8"),
+            ]
+        else:
+            self.participants.choices = [
+                ("1", "1"),
+                ("2", "2"),
+            ]
+
 
     def validate(self):
         rv = super().validate()
