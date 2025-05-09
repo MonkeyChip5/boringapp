@@ -1,5 +1,6 @@
 import random
 import requests
+import json
 
 
 class Activity(object):
@@ -50,6 +51,8 @@ class ActivityClient(object):
 
         data = resp.json()
 
+        print(json.dumps(data, indent=4))
+
         if not isinstance(data, list) or not data:
             raise ValueError("Error in filter")
         
@@ -66,7 +69,7 @@ class ActivityClient(object):
 
         data = resp.json()
 
-        if not isinstance(data, list) or not data:
+        if not isinstance(data, dict) or not data:
             raise ValueError("Error in filter")
 
         return Activity(data)

@@ -1,10 +1,10 @@
 import base64,io
 from io import BytesIO
 from flask import Blueprint, render_template, session, url_for, redirect, request, flash
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from .. import activity_client
-from ..forms import InterestForm
+from ..forms import InterestForm, FavoriteForm
 from ..models import User, Review
 from ..utils import current_time
 
@@ -29,27 +29,53 @@ def index():
     return render_template("index.html", form=form)
 
 # activity page
-@activities.route("/activities", methods=["GET"])
+@activities.route("/activities", methods=["GET", "POST"])
 def activity():
-    form = InterestForm()
 
     activity = None
 
     query_type = request.args.get("query_type")
     activity_type = request.args.get("activity_type")
     participants = request.args.get("participants")
-    loggedIn = False
+    curr_key = request.args.get("key")
+
+    favorite_form = FavoriteForm()
+
+    if favorite_form.validate_on_submit():
+        print("SUBMITTED FAVORITE REQUEST")
+
+        key = favorite_form.activity_key.data
+
+        if key not in current_user.favorites:
+            print("adding new favorite for activity!", key)
+            current_user.favorites.append(key)
+            current_user.save()
+            return redirect(url_for("activities.favorites", username = current_user.username))
+        else:
+            print("removing favorite for activity!", key)
+            current_user.favorites.remove(key)
+            current_user.save()
+            return redirect(url_for("activities.favorites", username = current_user.username))
+    else:
+        print("INVALID FORM")
+        print(favorite_form.activity_key.data)
+
 
     try:
         if query_type == "random":
             activity = activity_client.get_random_activity()
         elif query_type == "filter":
             activity = activity_client.get_filtered_activity(activity_type, participants)
-
+        elif query_type == "key":
+            activity = activity_client.get_activity_by_key(curr_key)
         session['current_activity'] = activity.__dict__
         # print("current_activity: ", session.get('current_activity'))
 
-        return render_template("activity_detail.html", form=form, activity=activity)
+        favorite_form.activity_key.data = activity.key
+        is_favorite = current_user.is_authenticated and (activity.key in current_user.favorites)
+        favorite_form.submit.label.text = "Unfavorite" if is_favorite else "Favorite"
+
+        return render_template("activity_detail.html", activity=activity, favorite_form = favorite_form, is_favorite = None)
     except ValueError as e:
         return render_template("activity_detail.html", error_msg=str(e))
 
@@ -80,3 +106,40 @@ def user_detail(username):
     # reviews = Review.objects(commenter=user)
 
     # return render_template("user_detail.html", error=None, username=username, reviews=reviews)
+@activities.route("/favorites", methods = ["GET", "POST"])
+@login_required
+def favorites():
+
+    favorite_activities = []
+
+    form = FavoriteForm()
+
+    if form.validate_on_submit():
+
+        key = form.activity_key.data
+
+        print("valid form submission! activity key", key)
+
+        print("removing favorite for activity!", key)
+        current_user.favorites.remove(key)
+        current_user.save()
+        return redirect(url_for("activities.favorites", username = current_user.username))
+
+    else:
+        print('invalid form submission! key = ', form.activity_key.data)
+
+    for key in current_user.favorites:
+        try:
+            activity = activity_client.get_activity_by_key(key)
+
+            # different forms per activity
+            display_form = FavoriteForm()
+            display_form.submit.label.text = "Unfavorite"
+            display_form.activity_key.data = activity.key
+            
+            favorite_activities.append((activity, display_form))
+        except ValueError as e:
+            print(f"Skipping activity with key {key}: {e}")
+            continue  # Skip any activity that causes a fetch error
+
+    return render_template("favorites.html", favorites=favorite_activities)

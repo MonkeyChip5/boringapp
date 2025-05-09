@@ -1,0 +1,42 @@
+{% extends "header.html" %} {% block content %} {% if error %}
+<b class="text-red-400" role="alert"> {{ error }} </b>
+{% endif %}
+<div class="container mx-auto w-full md:w-2/3 lg:w-1/3">
+  <h1 class="main-title">{{ current_user.username }}'s Favorites</h1>
+</div>
+
+<br />
+<!-- first favorite -->
+<div class="recommended-row">
+  {% for activity, form in favorites %}
+  <div class="recommended-content">
+    <center>
+      {{activity.activity}}
+      <br />
+    </center>
+
+    <br />
+    <ul>
+      <li><strong>Type:</strong> {{activity.type}}</li>
+      <li><strong>Participants:</strong> {{activity.participants}}</li>
+      <li><strong>Price:</strong> {{activity.price|dollars}}</li>
+      <li><strong>Duration:</strong> {{activity.duration}}</li>
+      {% if activity.kid_friendly %}
+      <li>
+        <strong>Kid Friendly!</strong>
+      </li>
+      {% endif %}
+      {% if activity.link %}
+      <li><strong><a href="{{activity.link}}">Link</a></strong></li>
+      {% endif %}
+      <br />
+      <form class="search-bar" method="POST" action="">
+        {{ form.hidden_tag() }}
+
+        {{ form.submit(class="review-button")}}
+      </form>
+    </ul>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

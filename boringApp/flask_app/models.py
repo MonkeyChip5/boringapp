@@ -17,6 +17,9 @@ class User(db.Document, UserMixin):
     # Returns unique string identifying user
     def get_id(self):
         return str(self.username)
+    
+    def has_favorited(self, key):
+        return key in self.favorites
 
 # change for an activity review
 class Review(db.Document):

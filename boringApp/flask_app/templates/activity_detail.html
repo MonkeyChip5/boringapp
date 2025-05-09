@@ -2,43 +2,66 @@
 {% extends "header.html" %} {% block content %}
 <div class="main-container">
   <!-- <div class="decoration-main-container"><div class="decoration-main"></div></div> -->
-  <h2 class="main-title"> Bored? </h2>
+  <h2 class="main-title">Try this!</h2>
 
   <div class="activity-content">
     {% if activity %}
-      <center>
-        {{ activity.activity }}
-        <br><br>
-        <a class="activity-links" href="{{ url_for('activities.reviewAnActivity')}}">
+    <center>
+      {{ activity.activity }}
+      <br />
+      {% if current_user.is_authenticated %}
+      <br />
+
+      <form class="search-bar" method="POST" action="">
+        {{ favorite_form.csrf_token }} 
+        {{ favorite_form.hidden_tag() }}
+
+        {{ favorite_form.activity_key(value=activity.key) }}
+
+        {{ favorite_form.submit(class="review-button")}}
+      </form>
+
+
+      <br />
+      <a
+        class="activity-links"
+        href="{{ url_for('activities.reviewAnActivity')}}"
+      >
         add a review
-        </a>
-      </center>
-    
-      <br>
-      <ul>
-        <li><strong>Type:</strong> {{ activity.type }}</li>
-        <li><strong>Participants:</strong> {{ activity.participants }}</li>
-        <li><strong>Price:</strong> {{ activity.price }}</li>
-        <li><strong>Duration:</strong> {{ activity.duration }}</li>
-        <li><strong>Kid Friendly:</strong> {{ activity.kid_friendly }}</li>
-        {% if activity.link %}
-          <li><a href="{{ activity.link }}">Link for More Info</a></li>
-        {% endif %}
-      </ul>
+      </a>
+      {% endif %}
+    </center>
+
+    <br />
+    <ul>
+      <li><strong>Type:</strong> {{ activity.type }}</li>
+      <li><strong>Participants:</strong> {{ activity.participants }}</li>
+      <li><strong>Price:</strong> {{ activity.price|dollars }}</li>
+      <li><strong>Duration:</strong> {{ activity.duration }}</li>
+      {% if activity.kid_friendly %}
+      <li><strong>Kid Friendly ✅</strong></li>
+      {% endif %}
+      {% if activity.link %}
+      <li><a href="{{ activity.link }}">Link for More Info</a></li>
+      {% endif %}
+    </ul>
 
     {% else %}
-        <p>No Activity Found :(</p>
+    <p>No Activity Found :(</p>
 
     {% endif %}
 
-    <br>
-    <a class="activity-links" href="{{ url_for('activities.activity', 
+    <br />
+    <a
+      class="activity-links"
+      href="{{ url_for('activities.activity', 
                         query_type=request.args.get('query_type'), 
                         activity_type=request.args.get('activity_type'), 
-                        participants=request.args.get('participants')) }}">
+                        participants=request.args.get('participants')) }}"
+    >
       Try Another Activity (same filters)
     </a>
-    <br><br>
+    <br /><br />
     <a class="activity-links" href="{{ url_for('activities.index') }}">Home</a>
   </div>
 </div>

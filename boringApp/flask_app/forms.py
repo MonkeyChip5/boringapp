@@ -3,7 +3,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from werkzeug.utils import secure_filename
-from wtforms import StringField, SubmitField, TextAreaField, PasswordField, BooleanField, RadioField, SelectField, IntegerField
+from wtforms import StringField, SubmitField, TextAreaField, PasswordField, BooleanField, RadioField, SelectField, IntegerField, HiddenField
 from wtforms.validators import (
     InputRequired,
     Length,
@@ -11,7 +11,8 @@ from wtforms.validators import (
     EqualTo,
     ValidationError,
     Optional,
-    NumberRange
+    NumberRange,
+    DataRequired
 )
 
 from .models import User
@@ -139,3 +140,7 @@ class ReviewForm(FlaskForm):
         validators=[Length(max=500)]
     )
     submit = SubmitField("Submit Review")
+
+class FavoriteForm(FlaskForm):
+    activity_key = HiddenField('Activity Key', validators=[DataRequired()])
+    submit = SubmitField('')
