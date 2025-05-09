@@ -3,7 +3,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from werkzeug.utils import secure_filename
-from wtforms import StringField, SubmitField, TextAreaField, PasswordField, BooleanField, RadioField, SelectField
+from wtforms import StringField, SubmitField, TextAreaField, PasswordField, BooleanField, RadioField, SelectField, IntegerField
 from wtforms.validators import (
     InputRequired,
     Length,
@@ -11,6 +11,7 @@ from wtforms.validators import (
     EqualTo,
     ValidationError,
     Optional,
+    NumberRange
 )
 
 from .models import User
@@ -125,4 +126,21 @@ class UpdateProfilePicForm(FlaskForm):
     submit_picture = SubmitField("Update")
 
 # Review Page for a Specific Activity: Review Form
-
+class ReviewForm(FlaskForm):
+    enjoyability = IntegerField(
+        "Enjoyability (1–5)",
+        validators=[InputRequired(), NumberRange(min=1, max=100)]
+    )
+    recommendability = IntegerField(
+        "Recommendability (1–5)",
+        validators=[InputRequired(), NumberRange(min=1, max=100)]
+    )
+    stars = IntegerField(
+        "Overall Rating (1–5 Stars)",
+        validators=[InputRequired(), NumberRange(min=1, max=100)]
+    )
+    comment = TextAreaField(
+        "Comment (optional)",
+        validators=[Length(max=500)]
+    )
+    submit = SubmitField("Submit Review")
