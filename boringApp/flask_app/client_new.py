@@ -57,3 +57,16 @@ class ActivityClient(object):
         random_activity = random.choice(data)
 
         return Activity(random_activity)
+
+    def get_activity_by_key(self, key):
+        url = f"{self.base_url}activity/{key}"
+        resp = self.sess.get(url)
+        if resp.status_code != 200:
+            raise ValueError("Failed to request filtered activities")
+
+        data = resp.json()
+
+        if not isinstance(data, list) or not data:
+            raise ValueError("Error in filter")
+
+        return Activity(data)
