@@ -11,11 +11,11 @@ class User(db.Document, UserMixin):
     username = db.StringField(required=True, unique=True, min_length=1, max_length=40)
     email = db.EmailField(required=True, unique=True)
     password = db.StringField(required=True)
-    profile_pic = db.ImageField()
 
-    # Returns unique string identifying our object
+    favorites = db.ListField(db.StringField())
+
+    # Returns unique string identifying user
     def get_id(self):
-        # TODO: implement
         return str(self.username)
 
 # change for an activity review
