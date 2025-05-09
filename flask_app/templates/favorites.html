@@ -34,6 +34,9 @@
         {{ form.hidden_tag() }}
 
         {{ form.submit(class="review-button")}}
+        <a class="activity-links" href="{{ url_for('activities.reviewAnActivity', key=activity.key)}}">
+          add a review
+        </a>
       </form>
     </ul>
   </div>
