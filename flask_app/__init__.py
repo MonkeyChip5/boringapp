@@ -17,7 +17,7 @@ import os
 
 # local
 # from .client import MovieClient
-from .client_new import ActivityClient
+from .client import ActivityClient
 
 # update with your API Key
 OMDB_API_KEY = '37745e75'
