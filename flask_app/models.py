@@ -27,7 +27,7 @@ class Review(db.Document):
     enjoyability = db.IntField(required=True, min_value=1, max_value=5)
     recommendability = db.IntField(required=True, min_value=1, max_value=5)
     stars = db.IntField(required=True, min_value=1, max_value=5)
-    comment = db.StringField(min_length=5, max_length=500)
+    comment = db.StringField(max_length=500)
     date = db.StringField(required=True)
     activity_id = db.StringField(required=True, min_length=7, max_length=7)
     activity_title = db.StringField(required=True, min_length=1, max_length=200)

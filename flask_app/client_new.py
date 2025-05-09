@@ -69,7 +69,7 @@ class ActivityClient(object):
 
         data = resp.json()
 
-        if not isinstance(data, dict) or not data:
+        if not data:
             raise ValueError("Error in filter")
 
         return Activity(data)

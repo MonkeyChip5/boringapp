@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, session, url_for, redirect, reques
 from flask_login import current_user, login_required
 
 from .. import activity_client
-from ..forms import InterestForm, FavoriteForm
+from ..forms import InterestForm, FavoriteForm, ReviewForm
 from ..models import User, Review
 from ..utils import current_time
 
@@ -79,12 +79,34 @@ def activity():
     except ValueError as e:
         return render_template("activity_detail.html", error_msg=str(e))
 
-
 # review page
-@activities.route("/reviews", methods=["GET", "POST"])
-def reviewAnActivity():
+@activities.route("/review/<key>", methods=["GET", "POST"])
+def reviewAnActivity(key):
+    try:
+        result = activity_client.get_activity_by_key(key)
+    except ValueError as e:
+        return render_template("review.html", error_msg=str(e))
+
+    form = ReviewForm()
+
+    if form.validate_on_submit():
+        review = Review(
+            commenter = current_user._get_current_object(),
+            enjoyability = form.enjoyability.data,
+            recommendability = form.recommendability.data,
+            stars = form.stars.data,
+            comment = form.comment.data,
+            date = current_time(),
+            activity_id = key,
+            activity_title = result.activity,
+        )
+        review.save()
+
+        return redirect(url_for('activities.user_reviews', username=review.commenter.username))
     
-    return render_template("review_an_activity.html")
+    reviews = Review.objects(activity_id=key)
+
+    return render_template("review.html", form=form, reviews=reviews, title=result)
     
     # this returns the full activity, so store it's activity name using the key "activity"
     # ex: current_activity {'activity': 'Draw something interesting', 'availability': 0, 'type': 'recreational', 
@@ -94,18 +116,17 @@ def reviewAnActivity():
 
 # user page
 @activities.route("/user/<username>")
-def user_detail(username):
-    return render_template("user_detail(b).html")
+def user_reviews(username):
     # return render_template("user_detail(b).html")
-    # user = User.objects(username=username).first()
+    user = User.objects(username=username).first()
 
-    # if not user:
-    #     error = "User not found"
-    #     return render_template("user_detail.html", error=error, image=None, username=username)
+    if not user:
+         error = "User not found"
+         return render_template("reviews.html", error=error, reviews=None)
     
-    # reviews = Review.objects(commenter=user)
+    reviews = Review.objects(commenter=user)
 
-    # return render_template("user_detail.html", error=None, username=username, reviews=reviews)
+    return render_template("reviews.html", error=None, reviews=reviews)
 @activities.route("/favorites", methods = ["GET", "POST"])
 @login_required
 def favorites():
@@ -123,7 +144,7 @@ def favorites():
         print("removing favorite for activity!", key)
         current_user.favorites.remove(key)
         current_user.save()
-        return redirect(url_for("activities.favorites", username = current_user.username))
+        return redirect(url_for("activities.favorites"))
 
     else:
         print('invalid form submission! key = ', form.activity_key.data)
