@@ -1,5 +1,3 @@
-""" change this so that it doesn't use profile picture """
-
 from flask import Blueprint, redirect, url_for, render_template, flash, request
 from flask_login import current_user, login_required, login_user, logout_user
 import base64

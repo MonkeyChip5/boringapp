@@ -117,7 +117,6 @@ def reviewAnActivity(key):
 # user page
 @activities.route("/user/<username>")
 def user_reviews(username):
-    # return render_template("user_detail(b).html")
     user = User.objects(username=username).first()
 
     if not user:
